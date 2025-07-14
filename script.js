@@ -16,7 +16,7 @@ function checkGuess() {
 
     // Проверяем, является ли ввод числом и находится ли он в диапазоне
     if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
-        messageDisplay.textContent = 'Если ты не Пельдорас и не Тауренская сволота напиши число от 1 до 100(1,2,3,4,5,.....,99,100)!';
+        messageDisplay.textContent = 'Если ты не Пельдорас и не Тауренская сволота напиши число от 1 до 100(Букву Е засунте в очко себЕ)!';
         messageDisplay.style.color = '#dc3545'; // Красный для ошибки
         return; // Выходим из функции
     }
