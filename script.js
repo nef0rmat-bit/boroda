@@ -7,104 +7,71 @@ const guessInput = document.getElementById('guessInput');
 const checkButton = document.getElementById('checkButton');
 const messageDisplay = document.getElementById('message');
 
-// Добавляем обработчик события на кнопку "Проверить"
-checkButton.addEventListener('click', checkGuess);
+// --- ИЗМЕНЕНИЯ ЗДЕСЬ: Обновленные слушатели для поля ввода ---
 
-// Функция для проверки догадки игрока
-function checkGuess() {
-    const userGuess = parseInt(guessInput.value); // Получаем число из поля ввода
-
-    // Проверяем, является ли ввод числом и находится ли он в диапазоне
-    if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
-        messageDisplay.textContent = 'Если ты не Пельдорас и не Тауренская сволота напиши число от 1 до 100(Букву Е засунте в очко себЕ)!';
-        messageDisplay.style.color = '#dc3545'; // Красный для ошибки
-        return; // Выходим из функции
-    }
-
-    attempts++; // Увеличиваем счетчик попыток
-
-    if (userGuess === secretNumber) {
-        messageDisplay.textContent = `Поздравляю! Ты угадал количество пЕздюлей ${secretNumber} за ${attempts} попыток!`;
-        messageDisplay.style.color = '#28a745'; // Зеленый для успеха
-        guessInput.disabled = true; // Отключаем поле ввода
-        checkButton.disabled = true; // Отключаем кнопку
-    } else if (userGuess < secretNumber) {
-        messageDisplay.textContent = 'Загаданное число больше. Попробуй еще раз!';
-        messageDisplay.style.color = '#ffc107'; // Желтый
-    } else {
-        messageDisplay.textContent = 'Загаданное число меньше. Попробуй еще раз!';
-        messageDisplay.style.color = '#ffc107'; // Желтый
-    }
-    guessInput.value = ''; // Очищаем поле ввода после каждой попытки
-    guessInput.focus(); // Возвращаем фокус на поле ввода
-}
-
-// Дополнительно: обработка нажатия Enter в поле ввода
+// 1. Запрещаем ввод нецифровых символов (включая 'e', 'E', '+', '-') при наборе
 guessInput.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-        checkGuess();
-    }
-    // Получаем ссылки на HTML-элементы
-const guessInput = document.getElementById('guessInput');
-const checkButton = document.getElementById('checkButton');
-const messageDisplay = document.getElementById('message');
-
-// --- ДОБАВЛЕННЫЙ КОД ---
-// 1. Запрещаем ввод букв 'e', 'E', '+' и '-' в поле ввода
-guessInput.addEventListener('keydown', function(event) {
-    // Проверяем, является ли нажатая клавиша 'e', 'E', '+' или '-'
-    // event.key возвращает символ, который будет введен
-    if (event.key === 'e' || event.key === 'E' || event.key === '+' || event.key === '-') {
-        event.preventDefault(); // Отменяем стандартное действие (ввод символа)
+    // Разрешаем: цифры (0-9), стрелки, Backspace, Delete, Tab, Enter
+    // Коды клавиш могут отличаться, но event.key более надежен
+    if (
+        !/[0-9]/.test(event.key) && // Если не цифра
+        event.key !== 'Backspace' &&
+        event.key !== 'Delete' &&
+        event.key !== 'ArrowLeft' &&
+        event.key !== 'ArrowRight' &&
+        event.key !== 'Tab' &&
+        event.key !== 'Enter'
+    ) {
+        event.preventDefault(); // Отменяем ввод символа
     }
 });
 
-// 2. Дополнительная проверка на случай, если пользователь вставит текст (paste)
+// 2. Дополнительная очистка на случай вставки текста или других аномалий
 guessInput.addEventListener('input', function() {
-    // Удаляем все символы, кроме цифр
+    // Удаляем все символы, кроме цифр, включая 'e', '+', '-'
     this.value = this.value.replace(/[^0-9]/g, '');
 });
-// --- КОНЕЦ ДОБАВЛЕННОГО КОДА ---
+
+// --- КОНЕЦ ИЗМЕНЕНИЙ ---
 
 // Добавляем обработчик события на кнопку "Проверить"
 checkButton.addEventListener('click', checkGuess);
 
 // Функция для проверки догадки игрока
 function checkGuess() {
-    const userGuess = parseInt(guessInput.value); // Получаем число из поля ввода
+    // parseFloat вместо parseInt, чтобы точно обработать любые возможные числовые форматы,
+    // хотя мы уже очищаем ввод от не-цифр.
+    const userGuess = parseFloat(guessInput.value);
 
     // Проверяем, является ли ввод числом и находится ли он в диапазоне
     if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
-        messageDisplay.textContent = 'Пожалуйста, введите целое число от 1 до 100.'; // Обновили сообщение
-        messageDisplay.style.color = '#dc3545'; // Красный для ошибки
-        return; // Выходим из функции
+        messageDisplay.textContent = 'Пожалуйста, введите целое число от 1 до 100.';
+        messageDisplay.style.color = '#dc3545';
+        return;
     }
 
-    attempts++; // Увеличиваем счетчик попыток
+    attempts++;
 
     if (userGuess === secretNumber) {
         messageDisplay.textContent = `Поздравляю! Ты угадал число ${secretNumber} за ${attempts} попыток!`;
-        messageDisplay.style.color = '#28a745'; // Зеленый для успеха
-        guessInput.disabled = true; // Отключаем поле ввода
-        checkButton.disabled = true; // Отключаем кнопку
+        messageDisplay.style.color = '#28a745';
+        guessInput.disabled = true;
+        checkButton.disabled = true;
     } else if (userGuess < secretNumber) {
         messageDisplay.textContent = 'Загаданное число больше. Попробуй еще раз!';
-        messageDisplay.style.color = '#ffc107'; // Желтый
+        messageDisplay.style.color = '#ffc107';
     } else {
         messageDisplay.textContent = 'Загаданное число меньше. Попробуй еще раз!';
-        messageDisplay.style.color = '#ffc107'; // Желтый
+        messageDisplay.style.color = '#ffc107';
     }
-    guessInput.value = ''; // Очищаем поле ввода после каждой попытки
-    guessInput.focus(); // Возвращаем фокус на поле ввода
+    guessInput.value = '';
+    guessInput.focus();
 }
 
-// Дополнительно: обработка нажатия Enter в поле ввода
+// Обработка нажатия Enter в поле ввода
 guessInput.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
-        // Убедимся, что enter не конфликтует с нашей новой логикой запрета символов
-        if (event.key !== 'e' && event.key !== 'E' && event.key !== '+' && event.key !== '-') {
-             checkGuess();
-        }
+        // Мы уже фильтруем символы выше, так что здесь можно просто вызывать checkGuess
+        checkGuess();
     }
-});
 });
