@@ -16,7 +16,7 @@ function checkGuess() {
 
     // Проверяем, является ли ввод числом и находится ли он в диапазоне
     if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
-        messageDisplay.textContent = 'Пожалуйста, введите число от 1 до 100.';
+        messageDisplay.textContent = 'Василич блеать, введите ЦЕЛОЕ(Единое, ПОЛОЖИТЕЛЬНОЕ, без знаков +/- и прочего говна)число от 1 до 100.';
         messageDisplay.style.color = '#dc3545'; // Красный для ошибки
         return; // Выходим из функции
     }
