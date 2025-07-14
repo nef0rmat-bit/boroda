@@ -16,7 +16,7 @@ function checkGuess() {
 
     // Проверяем, является ли ввод числом и находится ли он в диапазоне
     if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
-        messageDisplay.textContent = 'Василич блеать, введите ЦЕЛОЕ(Единое, ПОЛОЖИТЕЛЬНОЕ, без знаков +/- и прочего говна)число от 1 до 100.';
+        messageDisplay.textContent = 'Если ты не Пельдорас и не Тауренская сволота напиши число от 1 до 100!';
         messageDisplay.style.color = '#dc3545'; // Красный для ошибки
         return; // Выходим из функции
     }
@@ -24,7 +24,7 @@ function checkGuess() {
     attempts++; // Увеличиваем счетчик попыток
 
     if (userGuess === secretNumber) {
-        messageDisplay.textContent = `Поздравляю! Ты угадал число ${secretNumber} за ${attempts} попыток!`;
+        messageDisplay.textContent = `Поздравляю! Ты угадал количество пЕздюлей ${secretNumber} за ${attempts} попыток!`;
         messageDisplay.style.color = '#28a745'; // Зеленый для успеха
         guessInput.disabled = true; // Отключаем поле ввода
         checkButton.disabled = true; // Отключаем кнопку
